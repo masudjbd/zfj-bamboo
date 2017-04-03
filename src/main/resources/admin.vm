@@ -1,0 +1,119 @@
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+   <title>Zephyr for JIRA Admin</title>
+   <meta name="decorator" content="atl.admin">
+    $webResourceManager.requireResource("com.thed.zephyr.zfj-bamboo:zephyr-for-jira-test-management-bamboo-resources")
+    $webResourceManager.requireResource("com.atlassian.auiplugin:dialog2")
+    $webResourceManager.requireResource("com.atlassian.auiplugin:aui-experimental-iconfont")
+            
+        
+
+   <meta name="application-base-url" content="$applicationProperties.getBaseUrl()">
+   <script type="text/javascript">
+        AJS.$(function(){
+            AJS.$('#add-server-button').click(function(){
+                AJS.$('form.aui').show();
+                AJS.$('form.aui').find("input").clearInputs();
+           		AJS.$("div.zephyr-form-error").hide();
+				AJS.$("div.zephyr-form-success").hide();
+				AJS.$("div.zephyr-form-validating").hide();
+                
+                AJS.$("#server-save-button").off("click");
+                attachConfigSaveEvent();
+            })
+            AJS.$('a.cancel').click(function(){
+            		AJS.$("div.zephyr-form-error").hide();
+					AJS.$("div.zephyr-form-success").hide();
+					AJS.$("div.zephyr-form-validating").hide();
+            
+                AJS.$('form.aui').hide();
+            })
+            
+            AJS.$('form.aui').submit(function(event){
+            })
+        })
+
+   </script>
+</head>
+<body>
+<h1>JIRA Server Configuration</h1>
+<table class="aui">
+   <thead>
+   <tr>
+       <th id="url">URL</th>
+       <th id="type">Username</th>
+       <th id="verified">Verified</th>
+       <th id="action">Action</th>
+   </tr>
+   </thead>
+   <tbody>
+   <tr>
+       <td headers="url">Default</td>
+       <td headers="type">TBD</td>
+       <td headers="verified">TBD</td>
+       <td class="action" headers="action">
+           <a href="#actions" aria-owns="actions" aria-haspopup="true" class="aui-button aui-style-default aui-dropdown2-trigger">
+                <span class="aui-icon aui-icon-small aui-iconfont-configure"></span>
+            </a>
+           <div id="actions" class="aui-style-default aui-dropdown2">
+               <ul class="aui-list-truncate">
+                   <li><a href="#">Delete</a></li>
+               </ul>
+           </div>
+       </td>
+   </tr>
+   </tbody>
+</table>
+<br>
+<button class="aui-button" value="Add New JIRA Server" id="add-server-button" title="Add New JIRA Server">Add New JIRA Server</button>
+
+<hr>
+
+		<div class="aui-message info zephyr-config-validate-msg-error" data-field-name="from"  style="display:none">Error</div>
+		<div class="aui-message error zephyr-config-validate-msg-error" data-field-name="from"  style="display:none">Error</div>
+		<div class="aui-message success zephyr-config-validate-msg-success" data-field-name="from"  style="display:none">Successfully Validated</div>
+   
+<form class="aui" style="display:none">
+   <div class="field-group">
+       <label for="url">URL
+           <span class="aui-icon icon-required">(required)</span></label>
+       <input class="text large-field" type="text"
+              id="url" name="url" placeholder="Your JIRA Server URL ">
+   </div>
+   <div class="field-group">
+       <label for="username">Username
+           <span class="aui-icon icon-required">(required)</span></label>
+       <input class="text large-field" type="text"
+              id="username" name="username" placeholder="Your user name">
+   </div>
+   <div class="field-group">
+       <label for="password">Password
+           <span class="aui-icon icon-required">(required)</span></label>
+       <input class="text large-field" type="password"
+              id="password" name="password" placeholder="Your password">
+   </div>
+   <div class="field-group" style="height:20px">
+		<div class="error zephyr-form-error control-form-error" data-field-name="from" style="display:none">You must provide an email address Bamboo-generated emails are sent from.</div>
+		<div class="zephyr-form-success" data-field-name="from" style="display:none">You must provide an email address Bamboo-generated emails are sent from.</div>
+		<div class="zephyr-form-validating" style="display:none"><span class="aui-icon aui-icon-wait"></span> Validating JIRA server configuration. Please wait...</div>
+   </div>
+   <div class="buttons-container" style="margin-top: 6px;">
+       <div class="buttons">
+           <button class="button submit" id="server-save-button" type="button" >Save</button>
+           <button class="button submit" id="server-validate-button" type="button" >TestConfig</button>
+           <a class="cancel" href="#">Cancel</a>
+       </div>
+   </div>
+</form>
+
+<div class="aui-message success zephyr-config-msg-success" style="width:30%; display:none;">
+        <p class="title">Configuration updated</p>
+    </div>
+<div class="aui-message error zephyr-config-msg-error" style="width:30%; display:none;">
+        <p class="title">Configuration updated</p>
+    </div>
+
+
+</body>
+
+</html>

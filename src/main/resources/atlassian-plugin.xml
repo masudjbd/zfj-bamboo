@@ -1,0 +1,73 @@
+<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+        <param name="plugin-icon">images/pluginIcon.png</param>
+        <param name="plugin-logo">images/pluginLogo.png</param>
+    </plugin-info>
+
+    <!-- add our i18n resource -->
+    <resource type="i18n" name="i18n" location="zephyr-for-jira-test-management-bamboo"/>
+    
+    <!-- add our web resources -->
+    <web-resource key="zephyr-for-jira-test-management-bamboo-resources" name="zephyr-for-jira-test-management-bamboo Web Resources">
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+        
+        <resource type="download" name="zephyr-for-jira-test-management-bamboo.css" location="/css/zephyr-for-jira-test-management-bamboo.css"/>
+        <resource type="download" name="zephyr-for-jira-test-management-bamboo.js" location="/js/zephyr-for-jira-test-management-bamboo.js"/>
+        <resource type="download" name="images/" location="/images"/>
+		<resource type="download" name="admin.js" location="admin.js" />
+
+        <context>zephyr-for-jira-test-management-bamboo</context>
+    </web-resource>
+
+    <!-- publish our component -->
+    <component key="myPluginComponent" class="com.thed.zephyr.bamboo.reporter.MyPluginComponentImpl" public="true">
+        <interface>com.thed.zephyr.bamboo.reporter.MyPluginComponent</interface>
+    </component>
+    
+    <!-- import from the product container -->
+    <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties" />
+    <template-context-item key="applicationPropertiesContextItem" component-ref="applicationProperties" context-key="applicationProperties" name="Application Properties Context Item"/> 
+    
+    
+    
+    
+    
+    
+    
+    <component-import key="userManager" interface="com.atlassian.sal.api.user.UserManager" />
+	<component-import key="loginUriProvider" interface="com.atlassian.sal.api.auth.LoginUriProvider" />
+	<component-import key="renderer" interface="com.atlassian.templaterenderer.velocity.one.six.VelocityTemplateRenderer" />
+	<component-import key="pluginSettingsFactory" interface="com.atlassian.sal.api.pluginsettings.PluginSettingsFactory" />
+	<component-import key="transactionTemplate" interface="com.atlassian.sal.api.transaction.TransactionTemplate" />
+ 
+	<servlet key="admin-servlet" class="com.thed.zephyr.bamboo.servlet.ZfJAdminServlet">
+	  <url-pattern>/zfj/admin</url-pattern>
+	</servlet>
+
+	<rest key="rest" path="/zfj-admin" version="1.0">
+		<description>Provides REST resources for the admin UI.</description>
+	</rest>
+	
+	  <web-item key="Zephyr For Jira Configuration" name="Zephyr For Jira Configuration" section="system.admin/plugins" weight="60">
+        <description>Simple link to zephyr configuration page.</description>
+        <label key="Zephyr For Jira Configuration" />
+        <link linkId="google_home">/plugins/servlet/zfj/admin</link>
+    </web-item>
+    
+    <taskType name="Publish Test Results to Zephyr for JIRA"
+		class="com.thed.zephyr.bamboo.plugin.task.ZephyrReporterTask"
+		key="zephyrTestReporter">
+		<description>Sync test cases and publish test results to Zephyr for JIRA</description>
+		<category name="test" />
+		<configuration
+			class="com.thed.zephyr.bamboo.plugin.task.ZephyrReporterTaskConfigurator" />
+		<resource type="download" name="zephyr-for-jira-test-management-bamboo.js" location="/js/zephyr-for-jira-test-management-bamboo.js"/>
+		<resource type="freemarker" name="edit" location="editZephyrTask.ftl" />
+		<resource type="download" name="icon" location="/images/zephyr_logo.png" />
+		
+	</taskType>
+    
+</atlassian-plugin>
